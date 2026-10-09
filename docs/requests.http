@@ -1,0 +1,75 @@
+### Extensao "REST Client" do VS Code: clique em "Send Request" acima de cada bloco.
+@api = http://localhost:3333/api
+
+### 1) Login (copie o token da resposta para a variavel abaixo)
+POST {{api}}/auth/login
+Content-Type: application/json
+
+{ "email": "admin@pi.local", "senha": "Admin@12345" }
+
+###
+@token = COLE_O_TOKEN_AQUI
+
+### Dispositivos
+GET {{api}}/dispositivos
+Authorization: Bearer {{token}}
+
+### Detalhe de um dispositivo
+GET {{api}}/dispositivos/ESP32-003
+Authorization: Bearer {{token}}
+
+### Visao geral
+GET {{api}}/visao-geral
+Authorization: Bearer {{token}}
+
+### Historico (7 | 30 | safra) de temperatura ou umidade
+GET {{api}}/historico?periodo=30&variavel=temperatura&dispositivo=todos
+Authorization: Bearer {{token}}
+
+### Previsao da janela de colheita
+GET {{api}}/previsao?produto=manga
+Authorization: Bearer {{token}}
+
+### Alertas abertos
+GET {{api}}/alertas?status=abertos
+Authorization: Bearer {{token}}
+
+### Reconhecer um alerta
+POST {{api}}/alertas/AL-0001/acao
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "acao": "reconhecer" }
+
+### Registrar acao (exige categoria)
+POST {{api}}/alertas/AL-0001/acao
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "acao": "registrar", "categoria": "Equipe acionada", "nota": "Equipe a caminho" }
+
+### Leitura manual (admin) - temperatura alta gera alerta critico
+POST {{api}}/leituras
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "dispositivo": "ESP32-001", "temperatura": 35.2, "umidade": 55 }
+
+### Forcar consulta ao ThingSpeak (admin)
+POST {{api}}/leituras/sincronizar
+Authorization: Bearer {{token}}
+
+### Precos de mercado
+GET {{api}}/mercado/ultimos
+Authorization: Bearer {{token}}
+
+### Relatorio de seguranca (admin)
+GET {{api}}/relatorios/seguranca?dias=7
+Authorization: Bearer {{token}}
+
+### Criar usuario (admin)
+POST {{api}}/usuarios
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{ "nome": "Maria", "email": "maria@exemplo.com", "senha": "Senha@1234", "perfil": "produtor" }
